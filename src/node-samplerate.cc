@@ -8,8 +8,6 @@
 using namespace node;
 using namespace v8;
 
-static int num = 0;
-
 static long Callback(void *callbackData, float **data) {
 
 	return 0;
@@ -31,14 +29,7 @@ static NAN_METHOD(Resample) {
 	unsigned int lengthIn = Buffer::Length(inputBuffer) / sizeof(short); //Length of the input data
 	unsigned int lengthOut = lengthIn * ratio + 1; //Length of the outputdata
 
-	//long inputFrames = (long) args[4]->NumberValue(); // Amount of frames to process
-	//long inputFrames = Buffer::Length(inputBuffer) / fromRatio;
 	long inputFrames = (lengthIn / channels); // Divide by 2 as we use 16-bit
-	std::cout << "  Input Buffer Length:" << Buffer::Length(inputBuffer) << std::endl;
-	std::cout << "  Input Frames:" << inputFrames << std::endl;
-
-	std::cout << "  Ratio:" << ratio << std::endl;
-
 
 	short *dataIn = reinterpret_cast<short*>(Buffer::Data(inputBuffer)); //Buffer for inputdata, as short array
 	short *dataOut = new short[lengthOut]; //Buffer for outputdata, as short array
@@ -48,7 +39,6 @@ static NAN_METHOD(Resample) {
 	src_short_to_float_array(dataIn, dataInFloat, lengthIn); //Convert the input from short array to float array
 
 	long outputFrames = ratio * inputFrames + 1;
-	//long outputFrames = 2;
 	std::cout << "  Output Frames:" << outputFrames << std::endl;
 
 
@@ -62,11 +52,6 @@ static NAN_METHOD(Resample) {
 
 	outputFrames = data.output_frames_gen; //Get actual values for frames
 	inputFrames = data.input_frames_used;
-
-	std::cout << std::endl;
-	std::cout << "  Actual Input Frames:" << inputFrames << std::endl;
-	std::cout << "  Actual Output Frames:" << outputFrames << std::endl;
-	std::cout << std::endl;
 
 	src_float_to_short_array(dataOutFloat, dataOut, lengthOut);  //Convert the output from float array to short array
 
