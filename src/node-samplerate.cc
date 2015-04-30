@@ -23,13 +23,22 @@ static NAN_METHOD(Resample) {
 	unsigned int toRatio = (unsigned int) args[2]->NumberValue(); // Rate to which we convert ()
 	unsigned int channels = (unsigned int) args[3]->NumberValue(); // Amount of channels (1m = mono, 2 = stereo, 3 = ...)
 
-	long inputFrames = (long) args[4]->NumberValue(); // Amount of frames to process
+	// A frame is a sample * amount of channels so for mono one frame
+	// contains one sample, for stereo it contains to samples
 
 	double ratio = toRatio / (double) fromRatio; // Ratio calculated by dividing output-ratio by input-ratio
-	std::cout << "Ratio:" << ratio << std::endl;
 
 	unsigned int lengthIn = Buffer::Length(inputBuffer); //Length of the input data
 	unsigned int lengthOut = lengthIn * ratio; //Length of the outputdata //TODO: How to calculate this value?
+
+	//long inputFrames = (long) args[4]->NumberValue(); // Amount of frames to process
+	//long inputFrames = Buffer::Length(inputBuffer) / fromRatio;
+	long inputFrames = lengthIn / channels;
+	std::cout << "Input Buffer Length:" << Buffer::Length(inputBuffer) << std::endl;
+	std::cout << "Input Frames:" << inputFrames << std::endl;
+
+	std::cout << "Ratio:" << ratio << std::endl;
+
 
 	short *dataIn = (short*) Buffer::Data(inputBuffer); //Buffer for inputdata, as short array
 	short *dataOut = new short[lengthOut]; //Buffer for outputdata, as short array
@@ -38,7 +47,9 @@ static NAN_METHOD(Resample) {
 
 	src_short_to_float_array(dataIn, dataInFloat, lengthIn); //Convert the input from short array to float array
 
-	long outputFrames = ratio * inputFrames + 1;
+	long outputFrames = 3 * ratio * inputFrames + 1;
+	//long outputFrames = 2;
+	std::cout << "Output Frames:" << outputFrames << std::endl;
 
 	SRC_DATA data;
 		data.data_in = dataInFloat;
