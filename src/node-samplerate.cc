@@ -8,11 +8,6 @@
 using namespace node;
 using namespace v8;
 
-static long Callback(void *callbackData, float **data) {
-
-	return 0;
-}
-
 static NAN_METHOD(Resample) {
 	NanScope();
 	//First, gather all attributes
