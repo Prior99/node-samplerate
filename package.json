@@ -1,0 +1,23 @@
+{
+  "name": "node-samplerate",
+  "version": "0.0.0",
+  "description": "A samplerate converter based on libsamplerate.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.cronosx.de/prior/node-samplerate"
+  },
+  "keywords": [
+    "samplerate",
+    "libsamplerate"
+  ],
+  "dependencies": {
+      "bindings": "~1.2.1",
+      "nan": "~1.6.2"
+  },
+  "author": "Frederick Gnodtke",
+  "license": "GPL"
+}
