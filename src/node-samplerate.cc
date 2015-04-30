@@ -39,8 +39,6 @@ static NAN_METHOD(Resample) {
 	src_short_to_float_array(dataIn, dataInFloat, lengthIn); //Convert the input from short array to float array
 
 	long outputFrames = ratio * inputFrames + 1;
-	std::cout << "  Output Frames:" << outputFrames << std::endl;
-
 
 	SRC_DATA data;
 		data.data_in = dataInFloat;
