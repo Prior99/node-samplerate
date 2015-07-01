@@ -19,5 +19,9 @@
       "nan": "~1.6.2"
   },
   "author": "Frederick Gnodtke",
-  "license": "GPL"
+  "license": "GPL",
+  "scripts" : {
+    "preinstall" : "git submodule init && git submodule update",
+    "install" : "node-gyp rebuild"
+  }
 }
