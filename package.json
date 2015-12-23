@@ -1,6 +1,6 @@
 {
   "name": "node-samplerate",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A samplerate converter based on libsamplerate.",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,9 @@
   "repository": {
     "type": "git",
     "url": "https://git.cronosx.de/prior/node-samplerate"
+  },
+  "engines": {
+    "node": ">=0.10.0"
   },
   "keywords": [
     "samplerate",
