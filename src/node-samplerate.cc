@@ -8,13 +8,12 @@
 using namespace node;
 using namespace v8;
 
-static NAN_METHOD(Resample) {
-	NanScope();
+static void Resample(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 	//First, gather all attributes
-	Local<Object> inputBuffer = Local<Object>::Cast(args[0]); // Buffer containing the input
-	unsigned int fromRatio = (unsigned int) args[1]->NumberValue(); // Rate from which we convert (e.g. 22050 Hz)
-	unsigned int toRatio = (unsigned int) args[2]->NumberValue(); // Rate to which we convert ()
-	unsigned int channels = (unsigned int) args[3]->NumberValue(); // Amount of channels (1m = mono, 2 = stereo, 3 = ...)
+	Local<Object> inputBuffer = Local<Object>::Cast(info[0]); // Buffer containing the input
+	unsigned int fromRatio = (unsigned int) info[1]->NumberValue(); // Rate from which we convert (e.g. 22050 Hz)
+	unsigned int toRatio = (unsigned int) info[2]->NumberValue(); // Rate to which we convert ()
+	unsigned int channels = (unsigned int) info[3]->NumberValue(); // Amount of channels (1m = mono, 2 = stereo, 3 = ...)
 
 	// A frame is a sample * amount of channels so for mono one frame
 	// contains one sample, for stereo it contains to samples
@@ -48,12 +47,12 @@ static NAN_METHOD(Resample) {
 
 	src_float_to_short_array(dataOutFloat, dataOut, lengthOut);  //Convert the output from float array to short array
 
-	Local<Object> outputBuffer = NanNewBufferHandle(reinterpret_cast<char*>(dataOut), lengthOut*sizeof(short)); //Return the result
-	NanReturnValue(outputBuffer);
+	Local<Object> outputBuffer = Nan::NewBuffer(reinterpret_cast<char*>(dataOut), lengthOut*sizeof(short)).ToLocalChecked(); //Return the result
+	info.GetReturnValue().Set(outputBuffer);
 }
 
 static void InitSamplerate(Handle<Object> exports) {
-	exports->Set(NanNew("resample"), NanNew<FunctionTemplate>(Resample)->GetFunction());
+	exports->Set(Nan::New("resample").ToLocalChecked(), Nan::New<FunctionTemplate>(Resample)->GetFunction());
 }
 
 NODE_MODULE(node_samplerate, InitSamplerate);
